@@ -8,6 +8,6 @@ import { ChartsMainPageComponent } from './charts-main-page/charts-main-page.com
   declarations: [],
   imports: [
     CommonModule,
-  ]
+  ],
 })
 export class ChartsModule { }

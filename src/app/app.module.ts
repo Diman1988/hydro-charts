@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ChartsMainPageComponent } from './charts/charts-main-page/charts-main-page.component';
 import { ChartsModule } from './charts/charts.module';
+import { AuthService } from './services/auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { ChartsModule } from './charts/charts.module';
     AppRoutingModule,
     ChartsModule,
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
