@@ -3,14 +3,18 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ChartsMainPageComponent } from './charts/charts-main-page/charts-main-page.component';
+import { ChartsModule } from './charts/charts.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ChartsMainPageComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
