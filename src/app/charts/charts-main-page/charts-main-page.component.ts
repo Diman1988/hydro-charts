@@ -8,11 +8,12 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class ChartsMainPageComponent implements OnInit {
 
-  constructor(private auth: AuthService) {
-    this.auth.checkAuth();
+  constructor(private authService: AuthService) {
+    this.authService.login('admin@npkcalc.com', '1');
    }
 
   ngOnInit(): void {
+
   }
 
 }

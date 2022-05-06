@@ -1,34 +1,58 @@
 import { Injectable, OnInit } from '@angular/core';
-import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import { BehaviorSubject, from, Observable, of, Subject, Subscriber, tap } from 'rxjs';
 import * as npkcalc from './../../interfaces/rpc'
 import * as NPRPC from 'nprpc/nprpc';
+import { ServerService } from '../server/server.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private server = new npkcalc.Authorizator();
+  public auth$: Observable<npkcalc.UserData>;
 
-  private rpc: NPRPC.Rpc;
+  constructor(private serverSerivce$: ServerService) {
+    serverSerivce$.updateConfig(
+      new npkcalc.Authorizator(
+        {
+          port: 1,
+          object_id: 1n,
+          poa_idx: 0,
+          ip4: 0x7F000001,
+          websocket_port: 33252,
+          flags: 0,
+          class_id: "",
+        }
+      )
+    )
+   }
 
-  constructor() {
-    this.rpc = NPRPC.init();
-  }
-
-  checkAuth() {
-    this.server.data.port = 0
-    this.server.data.object_id = 1n
-    this.server.data.poa_idx = 0
-    this.server.data.ip4 = 0x7F000001
-    this.server.data.websocket_port = 33252
-
+  login(email: string = 'admin@npkcalc.com', password: string = '1') {
     console.log('service');
-    const auth$ = from(this.server.LogIn('admin@npkcalc.com', '1'))
 
-    auth$.subscribe({
-      next: value => console.log(value),
-      error: error => console.log(error),
-    })
+    this.serverSerivce$.server$.pipe(
+      tap(
+        (server) => this.auth$ = from(server.LogIn(email, password))
+      ),
+      tap(() => console.log("login"))
+    ).
+    subscribe(
+      {
+        next: (server) => console.log('server config:', server),
+        error: (error) => console.log('server error:', error),
+        complete: () => console.log("server complete"),
+      }
+    );
+
+    this.auth$.subscribe(
+      {
+        next: (v) => console.log('Authentification data: ', v),
+        error: (e) => console.log('Authentification error:\n\n', e),
+        complete: () => console.log('auth complete'),
+      }
+    )
+
     console.log('service done');
+
+    return this.auth$;
   }
 }

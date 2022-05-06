@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ChartsMainPageComponent } from './charts/charts-main-page/charts-main-page.component';
 import { ChartsModule } from './charts/charts.module';
 import { AuthService } from './services/auth/auth.service';
+import { ServerService } from './services/server/server.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { AuthService } from './services/auth/auth.service';
     AppRoutingModule,
     ChartsModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService, ServerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
