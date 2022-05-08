@@ -27,6 +27,7 @@ export class ServerService {
 
   constructor() {
     this.rpc = NPRPC.init();
+    console.warn('NPC Inited');
   }
 
   public updateConfig(config: npkcalc.Authorizator): Observable<npkcalc.Authorizator> {

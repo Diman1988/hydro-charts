@@ -14,7 +14,7 @@ export class AuthService {
     serverSerivce$.updateConfig(
       new npkcalc.Authorizator(
         {
-          port: 1,
+          port: 0,
           object_id: 1n,
           poa_idx: 0,
           ip4: 0x7F000001,
@@ -24,7 +24,7 @@ export class AuthService {
         }
       )
     )
-   }
+  }
 
   login(email: string = 'admin@npkcalc.com', password: string = '1') {
     console.log('service');
