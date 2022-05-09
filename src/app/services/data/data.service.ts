@@ -15,7 +15,7 @@ interface IData {
     id: number;
     name: string;
     owner: string;
-    graphData: IElement[],
+    chartData: IElement[],
 }
 @Injectable({
   providedIn: 'root'
@@ -47,17 +47,17 @@ export class DataService {
 
   private readonly fertilizerRef = NPRPC.make_ref<NPRPC.Flat.Vector_Direct2<npkcalc.Flat_npkcalc.Fertilizer_Direct>>();
 
-  private graphDataSubject$ = new BehaviorSubject<IData[]>([]);
+  private chartsDataSubject$ = new BehaviorSubject<IData[]>([]);
 
   private svgSubject$ = new BehaviorSubject<string[]>([]);
 
-  public graphData$ = this.graphDataSubject$.asObservable();
+  public chartsData$ = this.chartsDataSubject$.asObservable();
 
   public svg$ = this.svgSubject$.asObservable();
 
   constructor(private serverService$: ServerService) {
     this.getSvgData();
-    this.getGraphData();
+    this.getChartsData();
   }
 
   private getSvgData(): void {
@@ -77,7 +77,7 @@ export class DataService {
       });
   }
 
-  private getGraphData(): void {
+  private getChartsData(): void {
     from(this.calculator.GetData(this.solutionRef, this.fertilizerRef))
       .subscribe(v => {
         const solutions: IData[] = [];
@@ -89,12 +89,12 @@ export class DataService {
                 id: v.id,
                 name: v.name,
                 owner: v.owner,
-                graphData: this.getElementsWithValue(<NPRPC.Flat.Array_Direct1_float64[]>Array.from(v.elements_vd())),
+                chartData: this.getElementsWithValue(<NPRPC.Flat.Array_Direct1_float64[]>Array.from(v.elements_vd())),
               }
             )
           });
 
-        this.graphDataSubject$.next(solutions);
+        this.chartsDataSubject$.next(solutions);
 
         Array.from(this.fertilizerRef.value)
           // .forEach(v => console.log('<f>', v.formula, '</f>'));

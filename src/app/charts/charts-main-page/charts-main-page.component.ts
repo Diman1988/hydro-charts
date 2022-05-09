@@ -16,7 +16,7 @@ export class ChartsMainPageComponent implements OnInit {
 
     dataService.svg$.subscribe(img => console.log(img));
 
-    dataService.graphData$.subscribe(data => console.log(data));
+    dataService.chartsData$.subscribe(chart => console.log(chart));
 
     console.log('component')
   }
