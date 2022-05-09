@@ -14,7 +14,9 @@ export class ChartsMainPageComponent implements OnInit {
   constructor(private authService: AuthService, private dataService: DataService) {
     this.authService.login('admin@npkcalc.com', '1');
 
-    dataService.svgObs$.subscribe(img => console.log(img));
+    dataService.svg$.subscribe(img => console.log(img));
+
+    dataService.graphData$.subscribe(data => console.log(data));
 
     console.log('component')
   }

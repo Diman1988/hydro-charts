@@ -6,6 +6,17 @@ import * as NPRPC from 'nprpc/nprpc';
 import { ServerService } from '../server/server.service';
 import { ref } from 'nprpc/nprpc';
 
+interface IElement {
+  name: string;
+  value: number;
+}
+
+interface IData {
+    id: number;
+    name: string;
+    owner: string;
+    graphData: IElement[],
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -30,33 +41,80 @@ export class DataService {
 		return this.get_image('image/svg+xml', abuf);
 	}
 
-  private readonly ref = NPRPC.make_ref<NPRPC.Flat.Vector_Direct2<npkcalc.Flat_npkcalc.Media_Direct>>();
+  private readonly svgRef = NPRPC.make_ref<NPRPC.Flat.Vector_Direct2<npkcalc.Flat_npkcalc.Media_Direct>>();
 
-  private readonly commonimages = from(this.calculator.GetImages(this.ref));
+  private readonly solutionRef = NPRPC.make_ref<NPRPC.Flat.Vector_Direct2<npkcalc.Flat_npkcalc.Solution_Direct>>();
 
-  public svg$ = new BehaviorSubject<string[]>([]);
+  private readonly fertilizerRef = NPRPC.make_ref<NPRPC.Flat.Vector_Direct2<npkcalc.Flat_npkcalc.Fertilizer_Direct>>();
 
-  public svgObs$ = this.svg$.asObservable();
+  private graphDataSubject$ = new BehaviorSubject<IData[]>([]);
+
+  private svgSubject$ = new BehaviorSubject<string[]>([]);
+
+  public graphData$ = this.graphDataSubject$.asObservable();
+
+  public svg$ = this.svgSubject$.asObservable();
 
   constructor(private serverService$: ServerService) {
-    this.commonimages
+    this.getSvgData();
+    this.getGraphData();
+  }
+
+  private getSvgData(): void {
+    from(this.calculator.GetImages(this.svgRef))
       .subscribe(() => {
         const svgArray: Array<string> = [];
 
-        console.log('Get images to ref data')
-        this.svgObs$.subscribe(
+        this.svg$.subscribe(
           {
-            next: () => Array.from(this.ref.value)
+            next: () => Array.from(this.svgRef.value)
                           .forEach(svg => svgArray.push(this.get_image_svg(svg.data_vd().array_buffer))),
             error: (e) => console.log(e),
           }
         )
 
-        this.svg$.next(svgArray);
+        this.svgSubject$.next(svgArray);
       });
-    }
+  }
 
-  public getSvg() {
-    console.log("just a method");
+  private getGraphData(): void {
+    from(this.calculator.GetData(this.solutionRef, this.fertilizerRef))
+      .subscribe(v => {
+        const solutions: IData[] = [];
+
+        Array.from(this.solutionRef.value)
+          .forEach(v => {
+            solutions.push(
+              {
+                id: v.id,
+                name: v.name,
+                owner: v.owner,
+                graphData: this.getElementsWithValue(<NPRPC.Flat.Array_Direct1_float64[]>Array.from(v.elements_vd())),
+              }
+            )
+          });
+
+        this.graphDataSubject$.next(solutions);
+
+        Array.from(this.fertilizerRef.value)
+          // .forEach(v => console.log('<f>', v.formula, '</f>'));
+      });
+  }
+
+  private getElementsWithValue(values: NPRPC.Flat.Array_Direct1_float64[]): IElement[] {
+    const index_to_name = ["N-NO3", "N-NH4", "P", "K", "Ca", "Mg", "S", "Cl", "Fe", "Zn", "B", "Mn", "Cu", "Mo"];
+
+    const elements = [];
+
+    values.forEach((value, index) => {
+      elements.push(
+        {
+          name: index_to_name[index],
+          value: value,
+        }
+      )
+    });
+
+    return elements;
   }
 }
