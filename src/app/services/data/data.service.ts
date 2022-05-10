@@ -1,22 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Vector_Direct2 } from 'nprpc/nprpc/flat';
-import { BehaviorSubject, from, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
 import * as npkcalc from 'src/app/interfaces/rpc';
 import * as NPRPC from 'nprpc/nprpc';
 import { ServerService } from '../server/server.service';
-import { ref } from 'nprpc/nprpc';
+import { IData, IElement } from './../../interfaces/local';
 
-interface IElement {
-  name: string;
-  value: number;
-}
-
-interface IData {
-    id: number;
-    name: string;
-    owner: string;
-    chartData: IElement[],
-}
 @Injectable({
   providedIn: 'root'
 })
@@ -47,9 +35,13 @@ export class DataService {
 
   private readonly fertilizerRef = NPRPC.make_ref<NPRPC.Flat.Vector_Direct2<npkcalc.Flat_npkcalc.Fertilizer_Direct>>();
 
-  private chartsDataSubject$ = new BehaviorSubject<IData[]>([]);
+  private readonly selectedCharts$ = new BehaviorSubject<Array<number>>([]);
 
-  private svgSubject$ = new BehaviorSubject<string[]>([]);
+  private readonly chartsDataSubject$ = new BehaviorSubject<IData[]>([]);
+
+  private readonly svgSubject$ = new BehaviorSubject<string[]>([]);
+
+  public selected$ = this.selectedCharts$.asObservable();
 
   public chartsData$ = this.chartsDataSubject$.asObservable();
 
@@ -58,6 +50,11 @@ export class DataService {
   constructor(private serverService$: ServerService) {
     this.getSvgData();
     this.getChartsData();
+    console.log('data service');
+  }
+
+  public setSelected(value: number[]) {
+    this.selectedCharts$.next(value);
   }
 
   private getSvgData(): void {

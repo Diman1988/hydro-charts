@@ -24,11 +24,10 @@ export class AuthService {
         }
       )
     )
+    console.log('auth service');
   }
 
   login(email: string = 'admin@npkcalc.com', password: string = '1') {
-    console.log('service');
-
     this.serverSerivce$.server$.pipe(
       tap(
         (server) => this.auth$ = from(server.LogIn(email, password))
@@ -51,7 +50,7 @@ export class AuthService {
       }
     )
 
-    console.log('service done');
+    console.log('auth service login done');
 
     return this.auth$;
   }
