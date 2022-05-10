@@ -1,0 +1,10 @@
+<p>chart-container works!</p>
+<canvas
+  *ngIf="lineChartData"
+  baseChart
+  width="700"
+  height="700"
+  [data]="lineChartData"
+  [options]="lineChartOptions"
+  [type]="lineChartType"
+></canvas>

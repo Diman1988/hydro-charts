@@ -1,13 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChartsMainPageComponent } from './charts-main-page/charts-main-page.component';
-
+import { NgChartsModule } from 'ng2-charts';
+import { containers } from './containers';
+import { components } from './components';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ...containers,
+    ...components,
+  ],
   imports: [
     CommonModule,
+    NgChartsModule,
   ],
 })
 export class ChartsModule { }

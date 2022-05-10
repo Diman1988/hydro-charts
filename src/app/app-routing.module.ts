@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChartsMainPageComponent } from './charts/charts-main-page/charts-main-page.component';
+import { ChartsMainPageContainerComponent } from './charts/containers/charts-main-page/charts-main-page.container';
 
 const routes: Routes = [
   {
     path: '',
-    component: ChartsMainPageComponent,
+    component: ChartsMainPageContainerComponent,
   }
 ];
 

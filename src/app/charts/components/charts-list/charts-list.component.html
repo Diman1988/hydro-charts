@@ -1,0 +1,8 @@
+<p>charts-list:</p>
+<ul>
+  <li
+    *ngFor="let chartData of chartsData"
+    [class.active]="selected === chartData.id"
+    (click)="selectChart(chartData.id)"
+  >{{ chartData.name }}</li>
+</ul>
