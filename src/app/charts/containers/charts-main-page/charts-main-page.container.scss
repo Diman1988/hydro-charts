@@ -4,5 +4,10 @@
 
 .charts {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+}
+
+.module {
+  border-color: rgb(20, 188, 200);
+  border: solid;
 }

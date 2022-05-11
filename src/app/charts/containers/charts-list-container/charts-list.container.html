@@ -1,5 +1,5 @@
 <p>charts-list-container works!</p>
 <app-charts-list
   [chartsData]="(chartsDataList$ | async)"
-  (selectedChange)="setCharts($event)"
+  [(selected)]="selected"
 ></app-charts-list>

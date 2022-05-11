@@ -9,7 +9,7 @@ import { IData } from 'src/app/interfaces/local';
 export class ChartsListComponent implements OnInit {
   @Input() chartsData: IData[];
 
-  @Input() selected: number;
+  @Input() selected: number[] = [];
 
   @Output() selectedChange = new EventEmitter();
 
@@ -18,9 +18,19 @@ export class ChartsListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public selectChart(id: number) {
-    this.selected = id;
-    this.selectedChange.emit(id);
+  public addSelectedChart(id: number): void {
+    const newSelected = [...this.selected];
+
+    if (this.isSelected(id)) {
+      this.selectedChange.emit(newSelected.filter((value) => value !== id));
+    } else {
+      newSelected.push(id);
+      this.selectedChange.emit(newSelected);
+    }
+  }
+
+  public isSelected(id: number): boolean {
+    return (this.selected.some(checkingElement => checkingElement === id)) ? true : false;
   }
 
 }

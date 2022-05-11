@@ -11,15 +11,24 @@ import { DataService } from 'src/app/services/data/data.service';
 export class ChartsListContainerComponent implements OnInit {
   public chartsDataList$: Observable<IData[]>
 
+  get selected(): number[] {
+    let selectedArr = [];
+
+    this.dataService.selected$.subscribe(value => {
+      selectedArr = [...value];
+    });
+
+    return selectedArr;
+  }
+
+  set selected(value: number[]) {
+    this.dataService.setSelected(value);
+  }
+
   constructor(private dataService: DataService) {
-    this.chartsDataList$ = dataService.chartsData$;
   }
 
   ngOnInit(): void {
-  }
-
-  public setCharts($event) {
-    console.log($event);
-    this.dataService.setSelected($event);
+    this.chartsDataList$ = this.dataService.chartsData$;
   }
 }
