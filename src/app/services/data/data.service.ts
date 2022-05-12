@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, from } from 'rxjs';
+import { BehaviorSubject, from, map, withLatestFrom } from 'rxjs';
 import * as npkcalc from 'src/app/interfaces/rpc';
 import * as NPRPC from 'nprpc/nprpc';
 import { ServerService } from '../server/server.service';
@@ -35,15 +35,21 @@ export class DataService {
 
   private readonly fertilizerRef = NPRPC.make_ref<NPRPC.Flat.Vector_Direct2<npkcalc.Flat_npkcalc.Fertilizer_Direct>>();
 
-  private readonly selectedCharts$ = new BehaviorSubject<Array<number>>([]);
+  private readonly selectedChartsList$ = new BehaviorSubject<Array<number>>([]);
 
-  private readonly chartsDataSubject$ = new BehaviorSubject<IData[]>([]);
+  private readonly serverChartsDataSubject$ = new BehaviorSubject<IData[]>([]);
+
+  private readonly selectedChartsDataSubject$ = new BehaviorSubject<IData[]>([]);
 
   private readonly svgSubject$ = new BehaviorSubject<string[]>([]);
 
-  public selected$ = this.selectedCharts$.asObservable();
+  public selected$ = this.selectedChartsList$.asObservable();
 
-  public chartsData$ = this.chartsDataSubject$.asObservable();
+  public selected2$ = from(this.selectedChartsList$.getValue());
+
+  public selectedChartsData$ = this.selectedChartsDataSubject$.asObservable();
+
+  public serverChartsData$ = this.serverChartsDataSubject$.asObservable();
 
   public svg$ = this.svgSubject$.asObservable();
 
@@ -53,8 +59,28 @@ export class DataService {
     console.log('data service');
   }
 
-  public setSelected(value: number[]) {
-    this.selectedCharts$.next(value);
+  public setSelected(value: number[]): void {
+    this.selectedChartsList$.next(value);
+    this.selected2$ = from(this.selectedChartsList$.getValue());
+    this.getSelectedCharts();
+  }
+
+  public getSelectedCharts(): void {
+    // const filteredCharts$: BehaviorSubject<IData[]> = new BehaviorSubject([]);
+
+    this.serverChartsData$ // Data which should be filtered
+      .pipe(
+        withLatestFrom(this.selected$), // Array with id
+        map(([chartsData, id]) => {
+          return chartsData.filter( // Check an id
+              chart => id.some(idElement => chart.id === idElement)
+            );
+        }),
+      )
+      .subscribe(value => this.selectedChartsDataSubject$.next(value));
+
+
+    // this.selectedChartsDataSubject$.next(fi)
   }
 
   private getSvgData(): void {
@@ -91,8 +117,8 @@ export class DataService {
             )
           });
 
-        this.chartsDataSubject$.next(solutions);
-
+        this.serverChartsDataSubject$.next(solutions);
+          console.log('get charts')
         Array.from(this.fertilizerRef.value)
           // .forEach(v => console.log('<f>', v.formula, '</f>'));
       });

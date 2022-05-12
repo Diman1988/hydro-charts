@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../data/data.service';
-import { ChartConfiguration, ChartType } from 'chart.js';
+import { ChartConfiguration } from 'chart.js';
 import { IData } from 'src/app/interfaces/local';
 import { BehaviorSubject } from 'rxjs';
 
@@ -17,10 +17,10 @@ export class ChartsDataService {
     labels: [...this.elements],
   });
 
-  public newCharts$ = this.newChartsData$.asObservable();
+  public formattedCharts$ = this.newChartsData$.asObservable();
 
   constructor(private dataService: DataService) {
-    this.dataService.chartsData$.subscribe(charts => {
+    this.dataService.selectedChartsData$.subscribe(charts => {
       const newChartsData = [];
 
       charts.forEach((chart) => {
@@ -49,7 +49,7 @@ export class ChartsDataService {
       fill: 'origin',
     };
 
-    chart.chartData.forEach(dataObj => newChart.data.push(dataObj.value));
+    chart.chartData.forEach(dataObj => newChart.data.push(dataObj.value)); // push data
 
     return newChart;
   }
