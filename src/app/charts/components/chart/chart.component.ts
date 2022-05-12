@@ -20,19 +20,35 @@ export class ChartComponent implements OnInit {
     scales: {
       // We use this empty structure as a placeholder for dynamic theming.
       x: {},
-      'y-axis-0':
-        {
-          position: 'left',
-        },
-      'y-axis-1': {
+      y: {
+        type: 'linear',
+        display: true,
+        position: 'left',
+      },
+      y1: {
+        type: 'linear',
+        display: true,
         position: 'right',
+
+        // grid line settings
         grid: {
-          color: 'rgba(255,0,0,0.3)',
+          drawOnChartArea: false, // only want the grid lines for one axis to show up
         },
-        ticks: {
-          color: 'red'
-        }
-      }
+      },
+      // 'y-axis-0': {
+      //     position: 'left',
+      //     // stacked: true,
+      // },
+      // 'y-axis-1': {
+      //   // stacked: false,
+      //   position: 'right',
+      //   grid: {
+      //     color: 'rgba(255,0,0,0.3)',
+      //   },
+      //   ticks: {
+      //     color: 'red'
+      //   }
+      // }
     },
     plugins: {
       legend: { display: false },
@@ -44,7 +60,7 @@ export class ChartComponent implements OnInit {
   ngOnInit(): void { }
 
   ngOnChange() {
-    // console.log('update');
+    console.log(this.lineChartData);
   }
 
 }
