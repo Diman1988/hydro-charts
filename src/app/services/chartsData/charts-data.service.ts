@@ -57,6 +57,9 @@ export class ChartsDataService {
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: pointHoverBorderColor,
       fill: 'origin',
+      dataLabels: {
+        display: false,
+      }
     };
 
     const newChartLow = {
@@ -72,6 +75,23 @@ export class ChartsDataService {
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: pointHoverBorderColor,
       fill: 'origin',
+      datalabels: {
+        display: function(context) {
+          return context.dataset.data[context.dataIndex] > 0;
+        },
+        clamp: true,
+        anchor: 'end',
+        align: 'end',
+        offset: 10,
+        rotation: -90,
+        color: 'rgba(255,0,0,0.9)',
+        formatter: function (value, context): number | void {
+          return parseFloat(value);
+        },
+        font: {
+          weight: 'bold',
+        }
+      }
     };
 
     chart.chartData.forEach((dataObj, index) =>

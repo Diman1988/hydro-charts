@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartType } from 'chart.js';
+import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'app-chart',
@@ -8,6 +9,8 @@ import { ChartConfiguration, ChartType } from 'chart.js';
 })
 export class ChartComponent implements OnInit {
   @Input() lineChartData: ChartConfiguration['data'];
+
+  public pluginChars = [DataLabelsPlugin];
 
   public lineChartType: ChartType = 'line';
 
@@ -33,26 +36,21 @@ export class ChartComponent implements OnInit {
         // grid line settings
         grid: {
           drawOnChartArea: false, // only want the grid lines for one axis to show up
+          color: 'rgba(255,0,0,0.3)',
         },
+        ticks: {
+          color: 'red',
+        }
       },
-      // 'y-axis-0': {
-      //     position: 'left',
-      //     // stacked: true,
-      // },
-      // 'y-axis-1': {
-      //   // stacked: false,
-      //   position: 'right',
-      //   grid: {
-      //     color: 'rgba(255,0,0,0.3)',
-      //   },
-      //   ticks: {
-      //     color: 'red'
-      //   }
-      // }
     },
     plugins: {
-      legend: { display: false },
-    }
+      legend: {
+        display: false
+      },
+      datalabels: {
+        display: false,
+      }
+    },
   };
 
   constructor() { }
