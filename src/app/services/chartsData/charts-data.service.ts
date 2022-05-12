@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ChartsDataService {
   private readonly elements = [
-    'N-NO3', 'N-NH4', 'P', 'K', 'Ca', 'Mg', 'S', 'S', 'Cl', 'Fe', 'Zn', 'B', 'Mn', 'Cu', 'Mo', 'CO3'
+    'N-NO3', 'N-NH4', 'P', 'K', 'Ca', 'Mg', 'S', 'Cl', 'Fe', 'Zn', 'B', 'Mn', 'Cu', 'Mo',
   ];
 
   private newChartsData$: BehaviorSubject<ChartConfiguration['data']> = new BehaviorSubject({
@@ -24,7 +24,8 @@ export class ChartsDataService {
       const newChartsData = [];
 
       charts.forEach((chart) => {
-        newChartsData.push(this.chartDataConverter(chart))
+        const [newChart1, newChart2] = this.chartDataConverter(chart);
+        newChartsData.push(newChart1, newChart2)
       })
 
       this.newChartsData$.next({
@@ -33,25 +34,56 @@ export class ChartsDataService {
       });
     })
 
-    console.log('charts-service');
   }
 
   private chartDataConverter(chart: IData) {
-    const newChart = {
+    const hightValueElements = [];
+    const lowValueElements = [null, null, null, null, null, null, null];
+    // Set common colors for charts
+    const backgroundColor = this.get_random_color(0.2);
+    const borderColor = this.get_random_color(1);
+    const pointBackgroundColor = this.get_random_color(1);
+    const pointHoverBorderColor = this.get_random_color(0.8);
+
+    const newChartHight = {
+      type: 'line',
       data: [], // Data
       label: chart.name, // Chart name
-      backgroundColor: this.get_random_color(0.2),
-      borderColor: this.get_random_color(1),
-      pointBackgroundColor: this.get_random_color(1),
+      yAxisID: 'y',
+      backgroundColor: backgroundColor,
+      borderColor: borderColor,
+      pointBackgroundColor: pointBackgroundColor,
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: this.get_random_color(0.8),
+      pointHoverBorderColor: pointHoverBorderColor,
       fill: 'origin',
     };
 
-    chart.chartData.forEach(dataObj => newChart.data.push(dataObj.value)); // push data
+    const newChartLow = {
+      type: 'bar',
+      data: [], // Data
+      label: chart.name, // Chart name
+      yAxisID: 'y1',
+      borderWidth: 1,
+      backgroundColor: backgroundColor,
+      borderColor: borderColor,
+      pointBackgroundColor: pointBackgroundColor,
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: pointHoverBorderColor,
+      fill: 'origin',
+    };
 
-    return newChart;
+    chart.chartData.forEach((dataObj, index) =>
+      (index < 7)
+      ? hightValueElements.push(dataObj.value)
+      : lowValueElements.push(dataObj.value)
+    ); // push data
+
+    newChartHight.data = [...hightValueElements];
+    newChartLow.data= [...lowValueElements];
+
+    return [newChartHight, newChartLow];
   }
 
   private randomBetween(min: number, max: number): number {
