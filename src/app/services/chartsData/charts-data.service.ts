@@ -38,7 +38,7 @@ export class ChartsDataService {
 
   private chartDataConverter(chart: IData) {
     const hightValueElements = [];
-    const lowValueElements = [null, null, null, null, null, null, null];
+    const lowValueElements = [null, null, null, null, null, null, null, null];
     // Set common colors for charts
     const backgroundColor = this.get_random_color(0.2);
     const borderColor = this.get_random_color(1);
@@ -95,7 +95,7 @@ export class ChartsDataService {
     };
 
     chart.chartData.forEach((dataObj, index) =>
-      (index < 7)
+      (index < 8)
       ? hightValueElements.push(dataObj.value)
       : lowValueElements.push(dataObj.value)
     ); // push data
