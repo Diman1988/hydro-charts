@@ -13,17 +13,13 @@ export class ChartsMainPageContainerComponent implements OnInit {
   public images: Array<any> = [];
 
   constructor(private authService: AuthService, private dataService: DataService) {
-    this.authService.login('admin@npkcalc.com', '1');
-
-    this.dataService.svg$.subscribe(img => console.log(img));
-
-    // this.dataService.chartsData$.subscribe(chart => console.log(chart));
-
-    console.log('component')
+    console.log('Charts main component')
   }
 
   ngOnInit(): void {
+    this.authService.login('admin@npkcalc.com', '1');
 
+    this.dataService.svg$.subscribe(img => console.log(img));
   }
 
   ngOnChange():void {

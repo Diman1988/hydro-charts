@@ -15,8 +15,7 @@ export class ChartsListComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   public addSelectedChart(id: number): void {
     const newSelected = [...this.selected];
@@ -32,5 +31,4 @@ export class ChartsListComponent implements OnInit {
   public isSelected(id: number): boolean {
     return (this.selected.some(checkingElement => checkingElement === id)) ? true : false;
   }
-
 }

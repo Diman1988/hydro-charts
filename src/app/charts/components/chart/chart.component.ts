@@ -41,11 +41,10 @@ export class ChartComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   ngOnChange() {
-    console.log('update');
+    // console.log('update');
   }
 
 }

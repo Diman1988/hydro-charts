@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IData } from 'src/app/interfaces/local';
+import { ChartsDataService } from 'src/app/services/chartsData/charts-data.service';
 import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
@@ -23,12 +24,13 @@ export class ChartsListContainerComponent implements OnInit {
 
   set selected(value: number[]) {
     this.dataService.setSelected(value);
+    this.dataService.getSelectedCharts();
   }
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private chartsDataService: ChartsDataService) {
   }
 
   ngOnInit(): void {
-    this.chartsDataList$ = this.dataService.chartsData$;
+    this.chartsDataList$ = this.dataService.serverChartsData$
   }
 }

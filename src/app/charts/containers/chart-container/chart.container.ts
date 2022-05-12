@@ -16,11 +16,11 @@ export class ChartContainerContainerComponent implements OnInit {
 
   constructor(public dataService$: DataService, private chartsDataService$: ChartsDataService) {
     this.selected$ = this.dataService$.selected$;
-    this.charts$ = this.chartsDataService$.newCharts$;
+    this.charts$ = this.chartsDataService$.formattedCharts$;
   }
 
   ngOnInit(): void {
-    this.charts$.subscribe(s => console.log(s))
+    // this.charts$.subscribe(s => console.log(s))
+    // this.chartsDataService$.getSelectedCharts();
   }
-
 }
