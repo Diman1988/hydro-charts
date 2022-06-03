@@ -10,6 +10,8 @@ import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 export class ChartComponent implements OnInit {
   @Input() lineChartData: ChartConfiguration['data'];
 
+  @Input() chartWidth: number;
+
   public pluginChars = [DataLabelsPlugin];
 
   public lineChartType: ChartType = 'line';
@@ -55,10 +57,11 @@ export class ChartComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void { }
-
-  ngOnChange() {
-    console.log(this.lineChartData);
+  ngOnInit(): void {
+    console.warn("canvas init width:", this.chartWidth);
   }
 
+  ngOnChange() {
+    console.warn("canvas change width:", this.chartWidth);
+  }
 }

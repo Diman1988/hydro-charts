@@ -1,9 +1,11 @@
-<div class="chart">
+<div
+  class="chart"
+  [style.width.px]="chartWidth"
+  [style.maxHeight.px]="700"
+>
   <canvas
     *ngIf="lineChartData"
     baseChart
-    width="700"
-    height="700"
     [plugins]="pluginChars"
     [data]="lineChartData"
     [options]="lineChartOptions"
