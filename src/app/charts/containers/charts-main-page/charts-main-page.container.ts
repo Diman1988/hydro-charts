@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DataService } from 'src/app/services/data/data.service';
+import { ResolutionService } from 'src/app/services/resolution/resolution.service';
 
 @Component({
   selector: 'app-charts-main-page',
@@ -12,21 +14,33 @@ export class ChartsMainPageContainerComponent implements OnInit {
 
   public images: Array<any> = [];
 
-  constructor(private authService: AuthService, private dataService: DataService) {
+  public isTablet$: Observable<boolean>;
+
+  public isMobile$: Observable<boolean>;
+
+  public isLarge$: Observable<boolean>;
+
+  constructor(
+    private authService: AuthService,
+    private dataService: DataService,
+    public resolutionService: ResolutionService,
+  ) {
     console.log('Charts main component')
   }
 
   ngOnInit(): void {
     this.authService.login('admin@npkcalc.com', '1');
 
-    this.dataService.svg$.subscribe(img => console.log(img));
+    this.isMobile$ = this.resolutionService.isMobileResolution();
+    this.isTablet$ = this.resolutionService.isTabletResolution();
+    this.isLarge$ = this.resolutionService.isLargeResolution();
   }
 
   ngOnChange():void {
-    console.log(this.selected);
+    // console.log(this.selected);
   }
 
   public setSelected($event) {
-    console.log($event);
+    // console.log($event);
   }
 }
