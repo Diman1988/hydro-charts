@@ -1,6 +1,4 @@
 <div class="container">
-  <p *ngIf="(isTablet$ | async)">Tablet</p>
-  <p *ngIf="(isMobile$ | async)">Mobile</p>
   <div class="charts">
     <app-charts-list-container *ngIf="(isLarge$ | async)" class="module"></app-charts-list-container>
     <app-chart-container class="module"></app-chart-container>

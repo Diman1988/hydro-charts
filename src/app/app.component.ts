@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ResolutionService } from './services/resolution/resolution.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'hydro-charts';
+  public title = 'hydro-charts';
+
+  public isLarge: Observable<boolean>;
+
+  constructor(resolutionService: ResolutionService) {
+    this.isLarge = resolutionService.isLargeResolution();
+  }
 }

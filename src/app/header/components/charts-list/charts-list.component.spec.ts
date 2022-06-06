@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChartsMainPageComponent } from './charts-main-page.component';
+import { MenuChartsListComponent } from './charts-list.component';
 
-describe('ChartsMainPageComponent', () => {
-  let component: ChartsMainPageComponent;
-  let fixture: ComponentFixture<ChartsMainPageComponent>;
+describe('MenuChartsListComponent', () => {
+  let component: MenuChartsListComponent;
+  let fixture: ComponentFixture<MenuChartsListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChartsMainPageComponent ]
+      declarations: [ MenuChartsListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChartsMainPageComponent);
+    fixture = TestBed.createComponent(MenuChartsListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

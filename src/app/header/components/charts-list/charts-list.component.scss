@@ -1,0 +1,23 @@
+.active {
+  font-family: "Vibur", sans-serif;
+  color: #5F7161;
+}
+
+ul {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-inline-start: 0;
+  // margin: 10px;
+}
+
+li {
+  font-family: "Vibur", sans-serif;
+  cursor: pointer;
+  list-style-type: none;
+  color: #6D8B74;
+  margin-top: 5px;
+}
+
+li:hover {
+  color: #497052;
+}

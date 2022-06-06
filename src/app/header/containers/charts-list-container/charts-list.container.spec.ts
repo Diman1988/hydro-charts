@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChartsListContainerComponent } from './charts-list.container';
+import { MenuChartsListContainerComponent } from './charts-list.container';
 
 describe('ChartsListContainerComponent', () => {
-  let component: ChartsListContainerComponent;
-  let fixture: ComponentFixture<ChartsListContainerComponent>;
+  let component: MenuChartsListContainerComponent;
+  let fixture: ComponentFixture<MenuChartsListContainerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChartsListContainerComponent ]
+      declarations: [ MenuChartsListContainerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChartsListContainerComponent);
+    fixture = TestBed.createComponent(MenuChartsListContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

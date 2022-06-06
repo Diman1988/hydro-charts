@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IData } from 'src/app/interfaces/local';
 import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
-  selector: 'app-charts-list-container',
+  selector: 'app-menu-charts-list-container',
   templateUrl: './charts-list.container.html',
   styleUrls: ['./charts-list.container.scss']
 })
-export class ChartsListContainerComponent implements OnInit {
+export class MenuChartsListContainerComponent implements OnInit {
+  // @Input() isOpen: Observable<boolean>;
+
   public chartsDataList$: Observable<IData[]>
 
   get selected(): number[] {

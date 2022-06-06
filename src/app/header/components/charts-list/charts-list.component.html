@@ -1,0 +1,6 @@
+<li
+  *ngFor="let chartData of chartsData"
+  [class.active]="isSelected(chartData.id)"
+  (click)="addSelectedChart(chartData.id)"
+  mat-menu-item
+>{{ chartData.name }}</li>

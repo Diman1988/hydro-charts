@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+  <button
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with menu icon"
+    (click)="openMenu()"
+    [matMenuTriggerFor]="menu"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <app-menu-charts-list-container
+    ></app-menu-charts-list-container>
+  </mat-menu>
+</mat-toolbar>
+
