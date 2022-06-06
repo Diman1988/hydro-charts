@@ -3,7 +3,6 @@ import { NgModule } from "@angular/core";
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
@@ -22,10 +21,9 @@ import { HeaderContainerComponent } from "./containers/header-container/header-c
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    MatSidenavModule,
     MatMenuModule,
     BrowserAnimationsModule,
   ],
-  exports: [HeaderContainerComponent, MatSidenavModule,],
+  exports: [HeaderContainerComponent],
 })
 export class HeaderModule {};
