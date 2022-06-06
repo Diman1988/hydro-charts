@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="menu">
   <button
     mat-icon-button
     class="example-icon"
@@ -8,9 +8,10 @@
   >
     <mat-icon>menu</mat-icon>
   </button>
-  <mat-menu #menu="matMenu">
-    <app-menu-charts-list-container
-    ></app-menu-charts-list-container>
+  <mat-menu #menu="matMenu" class="hamburger__menu">
+    <app-menu-charts-list-container></app-menu-charts-list-container>
   </mat-menu>
+  <div class="menu__header">
+    <p>Charts</p>
+  </div>
 </mat-toolbar>
-

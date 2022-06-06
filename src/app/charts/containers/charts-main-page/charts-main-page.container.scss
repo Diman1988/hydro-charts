@@ -4,7 +4,10 @@
 }
 
 .container {
+  width: 100%;
   max-width: 1320px;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .charts {
@@ -19,4 +22,8 @@
   border-radius: 20px;
   padding: 20px 10px 20px 10px;
   background-color: #D0C9C0;
+}
+
+.list {
+  min-width: fit-content;
 }

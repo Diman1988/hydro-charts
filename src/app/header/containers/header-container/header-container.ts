@@ -9,7 +9,8 @@ import { BehaviorSubject } from 'rxjs';
 export class HeaderContainerComponent implements OnInit {
   private isOpenSbj$ = new BehaviorSubject(false);
 
-  public isOpen$ = this.isOpenSbj$.asObservable()
+  public isOpen$ = this.isOpenSbj$.asObservable();
+
   constructor() { }
 
   ngOnInit(): void {

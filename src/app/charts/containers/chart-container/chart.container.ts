@@ -28,21 +28,26 @@ export class ChartContainerContainerComponent implements OnInit {
   ) {
     this.selected$ = this.dataService$.selected$;
     this.charts$ = this.chartsDataService$.formattedCharts$;
+    this.chartWidth = Math.floor(window.innerWidth * 0.45)
   }
 
   ngOnInit(): void {
     this.resolutionService.isMobileResolution()
     .subscribe(
-      subscriber => this.chartResize(),
+      subscriber => (subscriber) ? this.chartResize('mobile') : undefined,
     );
 
     this.resolutionService.isTabletResolution()
     .subscribe(
-      subscriber => this.chartResize(),
+      subscriber => (subscriber) ? this.chartResize('tablet') : undefined,
     );
   }
 
-  private chartResize() {
-    this.chartWidth = Math.floor(window.innerWidth * 0.7);
+  private chartResize(type: 'tablet' | 'mobile' | 'large') {
+    switch(type) {
+      case 'tablet': this.chartWidth = Math.floor(window.innerWidth * 0.8); break;
+      case 'mobile': this.chartWidth = Math.floor(window.innerWidth * 0.7); break;
+      default: this.chartWidth = Math.floor(window.innerWidth * 0.45); break;
+    }
   }
 }

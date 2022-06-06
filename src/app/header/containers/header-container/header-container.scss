@@ -1,0 +1,15 @@
+::ng-deep {
+  .mat-menu-panel {
+    width:fit-content !important;
+    max-width: 100% !important;
+  }
+
+  .menu {
+    display: flex;
+    margin-bottom: 24px;
+  }
+
+  .menu__header {
+    justify-content: center;
+  }
+}
