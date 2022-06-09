@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject, from, Observable, of, Subject, Subscriber, tap } from 'rxjs';
 import * as npkcalc from './../../interfaces/rpc'
-import * as NPRPC from 'nprpc/nprpc';
+import * as NPRPC from 'nprpc';
 import { ServerService } from '../server/server.service';
 
 @Injectable({
@@ -13,15 +13,15 @@ export class AuthService {
   constructor(private serverSerivce$: ServerService) {
     serverSerivce$.updateConfig(
       new npkcalc.Authorizator(
-        {
-          port: 0,
-          object_id: 1n,
-          poa_idx: 0,
-          ip4: 0x7F000001,
-          websocket_port: 33252,
-          flags: 0,
-          class_id: "",
-        }
+        // {
+        //   port: 0,
+        //   object_id: 1n,
+        //   poa_idx: 0,
+        //   ip4: 0x7F000001,
+        //   websocket_port: 33252,
+        //   flags: 0,
+        //   class_id: "",
+        // }
       )
     )
     console.log('auth service');

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, map, withLatestFrom } from 'rxjs';
 import * as npkcalc from 'src/app/interfaces/rpc';
-import * as NPRPC from 'nprpc/nprpc';
+import * as NPRPC from 'nprpc';
 import { ServerService } from '../server/server.service';
 import { IData, IElement } from './../../interfaces/local';
 
@@ -10,15 +10,15 @@ import { IData, IElement } from './../../interfaces/local';
 })
 export class DataService {
   private calculator = new npkcalc.Calculator(
-    {
-      port: 0,
-      object_id: 0n,
-      poa_idx: 0,
-      ip4: 0x7F000001,
-      websocket_port: 33252,
-      flags: 0,
-      class_id: "",
-    }
+    // {
+    //   port: 0,
+    //   object_id: 0n,
+    //   poa_idx: 0,
+    //   ip4: 0x7F000001,
+    //   websocket_port: 33252,
+    //   flags: 0,
+    //   class_id: "",
+    // }
   );
 
   private get_image(type: string, abuf: ArrayBuffer) {

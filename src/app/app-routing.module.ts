@@ -4,7 +4,7 @@ import { ChartsMainPageContainerComponent } from './charts/containers/charts-mai
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'charts',
     component: ChartsMainPageContainerComponent,
   }
 ];
