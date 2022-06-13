@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { from, isObservable, Observable, of, tap } from 'rxjs';
-import * as npkcalc from './../../interfaces/rpc'
-import * as NPRPC from 'nprpc';
+import { UserData } from './../../interfaces/rpc'
 import { ServerService } from '../server/server.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  public user$: Observable<npkcalc.UserData>;
+  public user$: Observable<UserData>;
 
   constructor(private serverSerivce$: ServerService) { }
 

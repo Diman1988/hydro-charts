@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, map, withLatestFrom } from 'rxjs';
-import * as npkcalc from 'src/app/interfaces/rpc';
-import * as NPRPC from 'nprpc';
+import { Calculator, Flat_npkcalc } from 'src/app/interfaces/rpc';
+import { make_ref, Flat, narrow } from 'nprpc';
 import { ServerService } from '../server/server.service';
 import { IData, IElement } from './../../interfaces/local';
 
@@ -9,7 +9,7 @@ import { IData, IElement } from './../../interfaces/local';
   providedIn: 'root'
 })
 export class DataService {
-  private calculator: npkcalc.Calculator;
+  private calculator: Calculator;
 
   private get_image(type: string, abuf: ArrayBuffer) {
     return URL.createObjectURL(new Blob([abuf], {type: type}));
@@ -19,11 +19,11 @@ export class DataService {
 		return this.get_image('image/svg+xml', abuf);
 	}
 
-  private readonly svgRef = NPRPC.make_ref<NPRPC.Flat.Vector_Direct2<npkcalc.Flat_npkcalc.Media_Direct>>();
+  private readonly svgRef = make_ref<Flat.Vector_Direct2<Flat_npkcalc.Media_Direct>>();
 
-  private readonly solutionRef = NPRPC.make_ref<NPRPC.Flat.Vector_Direct2<npkcalc.Flat_npkcalc.Solution_Direct>>();
+  private readonly solutionRef = make_ref<Flat.Vector_Direct2<Flat_npkcalc.Solution_Direct>>();
 
-  private readonly fertilizerRef = NPRPC.make_ref<NPRPC.Flat.Vector_Direct2<npkcalc.Flat_npkcalc.Fertilizer_Direct>>();
+  private readonly fertilizerRef = make_ref<Flat.Vector_Direct2<Flat_npkcalc.Fertilizer_Direct>>();
 
   private readonly selectedChartsList$ = new BehaviorSubject<Array<number>>([]);
 
@@ -44,7 +44,7 @@ export class DataService {
   public svg$ = this.svgSubject$.asObservable();
 
   constructor(private serverService$: ServerService) {
-    this.calculator = NPRPC.narrow(this.serverService$.rpc.host_info.objects.calculator, npkcalc.Calculator);
+    this.calculator = narrow(this.serverService$.rpc.host_info.objects.calculator, Calculator);
     this.getSvgData();
     this.getChartsData();
     console.log('data service');
@@ -57,8 +57,6 @@ export class DataService {
   }
 
   public getSelectedCharts(): void {
-    // const filteredCharts$: BehaviorSubject<IData[]> = new BehaviorSubject([]);
-
     this.serverChartsData$ // Data which should be filtered
       .pipe(
         withLatestFrom(this.selected$), // Array with id
@@ -69,9 +67,6 @@ export class DataService {
         }),
       )
       .subscribe(value => this.selectedChartsDataSubject$.next(value));
-
-
-    // this.selectedChartsDataSubject$.next(fi)
   }
 
   private getSvgData(): void {
@@ -103,7 +98,7 @@ export class DataService {
                 id: v.id,
                 name: v.name,
                 owner: v.owner,
-                chartData: this.getElementsWithValue(<NPRPC.Flat.Array_Direct1_float64[]>Array.from(v.elements_vd())),
+                chartData: this.getElementsWithValue(<Flat.Array_Direct1_float64[]>Array.from(v.elements_vd())),
               }
             )
           });
@@ -115,7 +110,7 @@ export class DataService {
       });
   }
 
-  private getElementsWithValue(values: NPRPC.Flat.Array_Direct1_float64[]): IElement[] {
+  private getElementsWithValue(values: Flat.Array_Direct1_float64[]): IElement[] {
     const index_to_name = ["N-NO3", "N-NH4", "P", "K", "Ca", "Mg", "S", "Cl", "Fe", "Zn", "B", "Mn", "Cu", "Mo"];
 
     const elements = [];

@@ -9,9 +9,9 @@ import { DataService } from './services/';
 import { ResolutionService } from './services/';
 import { ServerService } from './services/';
 import { HeaderModule } from './header/header.module';
-import * as NPRPC from 'nprpc';
+import { Rpc } from 'nprpc';
 
-function initRpcFactory(service: ServerService): () => Promise<void | NPRPC.Rpc> {
+function initRpcFactory(service: ServerService): () => Promise<void | Rpc> {
   return () => service.rpcInit();
 }
 
