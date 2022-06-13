@@ -30,8 +30,10 @@ export class ResolutionService {
     this.resolution$
       .subscribe(
         observer => {
-          const isMobile = breakpointObserver.isMatched([Breakpoints.HandsetLandscape, Breakpoints.HandsetPortrait]);
-          const isTablet = breakpointObserver.isMatched([Breakpoints.TabletPortrait, Breakpoints.TabletLandscape]);
+          const isMobile =
+            breakpointObserver.isMatched([Breakpoints.HandsetLandscape, Breakpoints.HandsetPortrait]);
+          const isTablet =
+            breakpointObserver.isMatched([Breakpoints.TabletPortrait, Breakpoints.TabletLandscape]);
 
           this.isMobile.next(false);
           this.isTablet.next(false);

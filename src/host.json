@@ -1,4 +1,25 @@
 {
-	"ip": "127.0.0.1",
-	"port": 33252 
+	"secured": true,
+	"objects": {
+		"calculator": {
+			"object_id": 0,
+			"ip4": 2130706433,
+			"port": 52244,
+			"websocket_port": 33252,
+			"poa_idx": 0,
+			"flags": 5,
+			"class_id": "npkcalc/npkcalc.Calculator",
+			"hostname": "hydrosoft.uk"
+		},
+		"authorizator": {
+			"object_id": 1,
+			"ip4": 2130706433,
+			"port": 52244,
+			"websocket_port": 33252,
+			"poa_idx": 0,
+			"flags": 5,
+			"class_id": "npkcalc/npkcalc.Authorizator",
+			"hostname": "hydrosoft.uk"
+		}
+	}
 }

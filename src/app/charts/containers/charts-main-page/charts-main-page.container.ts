@@ -22,7 +22,6 @@ export class ChartsMainPageContainerComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private dataService: DataService,
     public resolutionService: ResolutionService,
   ) {
     console.log('Charts main component')

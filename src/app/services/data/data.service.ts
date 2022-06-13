@@ -9,17 +9,7 @@ import { IData, IElement } from './../../interfaces/local';
   providedIn: 'root'
 })
 export class DataService {
-  private calculator = new npkcalc.Calculator(
-    // {
-    //   port: 0,
-    //   object_id: 0n,
-    //   poa_idx: 0,
-    //   ip4: 0x7F000001,
-    //   websocket_port: 33252,
-    //   flags: 0,
-    //   class_id: "",
-    // }
-  );
+  private calculator: npkcalc.Calculator;
 
   private get_image(type: string, abuf: ArrayBuffer) {
     return URL.createObjectURL(new Blob([abuf], {type: type}));
@@ -54,6 +44,7 @@ export class DataService {
   public svg$ = this.svgSubject$.asObservable();
 
   constructor(private serverService$: ServerService) {
+    this.calculator = NPRPC.narrow(this.serverService$.rpc.host_info.objects.calculator, npkcalc.Calculator);
     this.getSvgData();
     this.getChartsData();
     console.log('data service');
@@ -118,7 +109,7 @@ export class DataService {
           });
 
         this.serverChartsDataSubject$.next(solutions);
-          console.log('get charts')
+        console.log('get charts');
         Array.from(this.fertilizerRef.value)
           // .forEach(v => console.log('<f>', v.formula, '</f>'));
       });

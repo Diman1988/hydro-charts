@@ -1,5 +1,5 @@
-import { Injectable, OnInit } from '@angular/core';
-import { BehaviorSubject, from, Observable, of, Subject, Subscriber, tap } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { from, isObservable, Observable, of, tap } from 'rxjs';
 import * as npkcalc from './../../interfaces/rpc'
 import * as NPRPC from 'nprpc';
 import { ServerService } from '../server/server.service';
@@ -8,29 +8,15 @@ import { ServerService } from '../server/server.service';
   providedIn: 'root'
 })
 export class AuthService {
-  public auth$: Observable<npkcalc.UserData>;
+  public user$: Observable<npkcalc.UserData>;
 
-  constructor(private serverSerivce$: ServerService) {
-    serverSerivce$.updateConfig(
-      new npkcalc.Authorizator(
-        // {
-        //   port: 0,
-        //   object_id: 1n,
-        //   poa_idx: 0,
-        //   ip4: 0x7F000001,
-        //   websocket_port: 33252,
-        //   flags: 0,
-        //   class_id: "",
-        // }
-      )
-    )
-    console.log('auth service');
-  }
+  constructor(private serverSerivce$: ServerService) { }
 
   login(email: string = 'admin@npkcalc.com', password: string = '1') {
-    this.serverSerivce$.server$.pipe(
+    console.log( this.serverSerivce$.serverAuthorizator$)
+    this.serverSerivce$.serverAuthorizator$.pipe(
       tap(
-        (server) => this.auth$ = from(server.LogIn(email, password))
+        (authorizator) => this.user$ = authorizator ? from(authorizator.LogIn(email, password)) : of(null)
       ),
       tap(() => console.log("login"))
     ).
@@ -42,16 +28,18 @@ export class AuthService {
       }
     );
 
-    this.auth$.subscribe(
-      {
-        next: (v) => console.log('Authentification data: ', v),
-        error: (e) => console.log('Authentification error:\n\n', e),
-        complete: () => console.log('auth complete'),
-      }
-    )
+    if (isObservable(this.user$)) {
+      this.user$.subscribe(
+        {
+          next: (v) => console.log('Authentification data: ', v),
+          error: (e) => console.log('Authentification error:\n\n', e),
+          complete: () => console.log('auth complete'),
+        }
+      )
+    }
 
     console.log('auth service login done');
 
-    return this.auth$;
+    return this.user$;
   }
 }

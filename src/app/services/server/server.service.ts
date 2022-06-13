@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { APP_INITIALIZER, Inject, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter, distinctUntilChanged } from 'rxjs/operators';
 import * as npkcalc from './../../interfaces/rpc'
 import * as NPRPC from 'nprpc';
 
@@ -7,36 +8,39 @@ import * as NPRPC from 'nprpc';
   providedIn: 'root'
 })
 export class ServerService {
-  private readonly serverSubject$ = new BehaviorSubject<npkcalc.Authorizator>(
-    new npkcalc.Authorizator(
-      // {
-      //   port: 0,
-      //   object_id: 1n,
-      //   poa_idx: 0,
-      //   ip4: 0x7F000001,
-      //   websocket_port: 33252,
-      //   flags: 0,
-      //   class_id: "",
-      // }
-    )
-  );
+  public rpc: NPRPC.Rpc;
 
-  public server$ = this.serverSubject$.asObservable();
+  private readonly serverAuthorizatorSubject$ = new BehaviorSubject<npkcalc.Authorizator>(null);
 
-  constructor() {
-    NPRPC.init();
+  public serverAuthorizator$ = this.serverAuthorizatorSubject$
+    .asObservable()
+    .pipe(
+      filter(user => user !== null),
+      distinctUntilChanged()
+    );
+
+  constructor() {}
+
+  public rpcInit(): Promise<void | NPRPC.Rpc> {
     console.warn('Server service: NPC Inited');
+
+    return NPRPC.init()
+            .then(rpc => {
+              this.rpc = rpc;
+              console.log(rpc.host_info.objects.authorizator)
+              this.updateConfig(rpc.host_info.objects.authorizator);
+            });
   }
 
   public updateConfig(config: npkcalc.Authorizator): Observable<npkcalc.Authorizator> {
     console.log('server config update');
-    this.serverSubject$.next(config);
-    this.server$.subscribe(
+    this.serverAuthorizatorSubject$.next(config);
+    this.serverAuthorizator$.subscribe(
       {
         next: (v) => console.log('new server config:\n', v),
       }
     )
 
-    return this.server$;
+    return this.serverAuthorizator$;
   }
 }
