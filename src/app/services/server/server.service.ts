@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, distinctUntilChanged } from 'rxjs/operators';
 import { Authorizator } from './../../interfaces/rpc'

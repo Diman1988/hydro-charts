@@ -7,7 +7,7 @@ import { ServerService } from '../server/server.service';
   providedIn: 'root'
 })
 export class AuthService {
-  public user$: Observable<UserData>;
+  public user$: Observable<UserData | null> = new Observable(subscriber => subscriber.next(null));
 
   constructor(private serverSerivce$: ServerService) { }
 

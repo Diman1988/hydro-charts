@@ -9,7 +9,7 @@ import { IData, IElement } from './../../interfaces/local';
   providedIn: 'root'
 })
 export class DataService {
-  private calculator: Calculator;
+  private calculator: Calculator | null;
 
   private get_image(type: string, abuf: ArrayBuffer) {
     return URL.createObjectURL(new Blob([abuf], {type: type}));
@@ -44,7 +44,9 @@ export class DataService {
   public svg$ = this.svgSubject$.asObservable();
 
   constructor(private serverService$: ServerService) {
-    this.calculator = narrow(this.serverService$.rpc.host_info.objects.calculator, Calculator);
+    this.calculator = this.serverService$.rpc
+      ? narrow(this.serverService$.rpc.host_info.objects.calculator, Calculator)
+      : null;
     this.getSvgData();
     this.getChartsData();
     console.log('data service');
@@ -70,56 +72,60 @@ export class DataService {
   }
 
   private getSvgData(): void {
-    from(this.calculator.GetImages(this.svgRef))
-      .subscribe(() => {
-        const svgArray: Array<string> = [];
+    if (this.calculator) {
+      from(this.calculator.GetImages(this.svgRef))
+        .subscribe(() => {
+          const svgArray: Array<string> = [];
 
-        this.svg$.subscribe(
-          {
-            next: () => Array.from(this.svgRef.value)
-                          .forEach(svg => svgArray.push(this.get_image_svg(svg.data_vd().array_buffer))),
-            error: (e) => console.log(e),
-          }
-        )
+          this.svg$.subscribe(
+            {
+              next: () => Array.from(this.svgRef.value)
+                            .forEach(svg => svgArray.push(this.get_image_svg(svg.data_vd().array_buffer))),
+              error: (e) => console.log(e),
+            }
+          )
 
-        this.svgSubject$.next(svgArray);
-      });
+          this.svgSubject$.next(svgArray);
+        });
+    }
   }
 
   private getChartsData(): void {
-    from(this.calculator.GetData(this.solutionRef, this.fertilizerRef))
-      .subscribe(v => {
-        const solutions: IData[] = [];
+    if(this.calculator) {
+      from(this.calculator.GetData(this.solutionRef, this.fertilizerRef))
+        .subscribe(v => {
+          const solutions: IData[] = [];
 
-        Array.from(this.solutionRef.value)
-          .forEach(v => {
-            solutions.push(
-              {
-                id: v.id,
-                name: v.name,
-                owner: v.owner,
-                chartData: this.getElementsWithValue(<Flat.Array_Direct1_float64[]>Array.from(v.elements_vd())),
-              }
-            )
-          });
+          Array.from(this.solutionRef.value)
+            .forEach(v => {
+              solutions.push(
+                {
+                  id: v.id,
+                  name: v.name,
+                  owner: v.owner,
+                  chartData: this.getElementsWithValue(<Flat.Array_Direct1_float64[]>Array.from(v.elements_vd())),
+                }
+              )
+            });
 
-        this.serverChartsDataSubject$.next(solutions);
-        console.log('get charts');
-        Array.from(this.fertilizerRef.value)
-          // .forEach(v => console.log('<f>', v.formula, '</f>'));
-      });
+          this.serverChartsDataSubject$.next(solutions);
+          console.log('get charts');
+          Array.from(this.fertilizerRef.value)
+            // .forEach(v => console.log('<f>', v.formula, '</f>'));
+        });
+    }
   }
 
   private getElementsWithValue(values: Flat.Array_Direct1_float64[]): IElement[] {
     const index_to_name = ["N-NO3", "N-NH4", "P", "K", "Ca", "Mg", "S", "Cl", "Fe", "Zn", "B", "Mn", "Cu", "Mo"];
 
-    const elements = [];
+    const elements: IElement[] = [];
 
     values.forEach((value, index) => {
       elements.push(
         {
           name: index_to_name[index],
-          value: value,
+          value: parseFloat(<string><unknown>value),
         }
       )
     });

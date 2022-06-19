@@ -10,15 +10,13 @@ import { ResolutionService } from 'src/app/services/resolution/resolution.servic
   styleUrls: ['./charts-main-page.container.scss']
 })
 export class ChartsMainPageContainerComponent implements OnInit {
-  @Input() selected: number;
-
   public images: Array<any> = [];
 
-  public isTablet$: Observable<boolean>;
+  public isTablet$: Observable<boolean> = new Observable(subscriber => subscriber.next(false));
 
-  public isMobile$: Observable<boolean>;
+  public isMobile$: Observable<boolean> = new Observable(subscriber => subscriber.next(false));
 
-  public isLarge$: Observable<boolean>;
+  public isLarge$: Observable<boolean> = new Observable(subscriber => subscriber.next(false));
 
   constructor(
     private authService: AuthService,
@@ -39,7 +37,7 @@ export class ChartsMainPageContainerComponent implements OnInit {
     // console.log(this.selected);
   }
 
-  public setSelected($event) {
-    // console.log($event);
-  }
+  // public setSelected($event) {
+  //   // console.log($event);
+  // }
 }

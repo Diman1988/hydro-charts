@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IData } from 'src/app/interfaces/local';
 import { DataService } from 'src/app/services/data/data.service';
@@ -11,10 +11,10 @@ import { DataService } from 'src/app/services/data/data.service';
 export class MenuChartsListContainerComponent implements OnInit {
   // @Input() isOpen: Observable<boolean>;
 
-  public chartsDataList$: Observable<IData[]>
+  public chartsDataList$: Observable<IData[]> = new Observable<IData[]>();
 
   get selected(): number[] {
-    let selectedArr = [];
+    let selectedArr: number[] = [];
 
     this.dataService.selected$.subscribe(value => {
       selectedArr = [...value];

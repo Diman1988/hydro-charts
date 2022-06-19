@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ChartConfiguration, ChartType } from 'chart.js';
+import { BubbleDataPoint, ChartConfiguration, ChartData, ChartType, ChartTypeRegistry, ScatterDataPoint } from 'chart.js';
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 
 @Component({
@@ -8,9 +8,9 @@ import DataLabelsPlugin from 'chartjs-plugin-datalabels';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit {
-  @Input() lineChartData: ChartConfiguration['data'];
+  @Input() lineChartData!: ChartData<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint | null)[], unknown> | undefined | null;
 
-  @Input() chartWidth: number;
+  @Input() chartWidth: number = 0;
 
   public pluginChars = [DataLabelsPlugin];
 
@@ -63,5 +63,6 @@ export class ChartComponent implements OnInit {
 
   ngOnChange() {
     console.warn("canvas change width:", this.chartWidth);
+    console.log(this.lineChartData);
   }
 }

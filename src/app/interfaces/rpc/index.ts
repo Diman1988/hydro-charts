@@ -371,7 +371,7 @@ export class Authorizator extends NPRPC.ObjectProxy {
     }
   let out = new Flat_npkcalc.npkcalc_M2_Direct(buf, 16);
   let __ret_value: UserData;
-  (__ret_value as any) = new Object();
+  __ret_value = new Object() as UserData;
   __ret_value.name = out._1.name;
   __ret_value.session_id = out._1.session_id;
   __ret_value.db = NPRPC.oid_create_from_flat(out._1.db);
@@ -406,7 +406,7 @@ export class Authorizator extends NPRPC.ObjectProxy {
     }
   let out = new Flat_npkcalc.npkcalc_M2_Direct(buf, 16);
   let __ret_value: UserData;
-  (__ret_value as any) = new Object();
+  __ret_value = new Object() as UserData;
   __ret_value.name = out._1.name;
   __ret_value.session_id = out._1.session_id;
   __ret_value.db = NPRPC.oid_create_from_flat(out._1.db);
@@ -471,7 +471,7 @@ let __ret_val: UserData;
       try {
       __ret_val = (obj as any).LogIn(ia._1, ia._2);
       }
-      catch(e) {
+      catch(e: any) {
         let obuf = buf;
         obuf.consume(obuf.size);
         obuf.prepare(24);
@@ -517,7 +517,7 @@ let __ret_val: UserData;
         obuf.commit(24);
         let oa = new Flat_npkcalc.AuthorizationFailed_Direct(obuf,16);
         oa.__ex_id = 0;
-  oa.reason = e.reason;
+  oa.reason = (e as any).reason;
         obuf.write_len(obuf.size - 4);
         obuf.write_msg_id(NPRPC.impl.MessageId.Exception);
         obuf.write_msg_type(NPRPC.impl.MessageType.Answer);

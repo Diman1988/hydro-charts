@@ -1,8 +1,17 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../data/data.service';
-import { ChartConfiguration } from 'chart.js';
+import {
+  BubbleDataPoint,
+  ChartData,
+  ChartDataset,
+  ChartType,
+  ChartTypeRegistry,
+  DefaultDataPoint,
+  ScatterDataPoint
+} from 'chart.js';
 import { IData } from 'src/app/interfaces/local';
 import { BehaviorSubject } from 'rxjs';
+import { Context } from 'chartjs-plugin-datalabels/types/context';
 
 @Injectable({
   providedIn: 'root'
@@ -12,33 +21,34 @@ export class ChartsDataService {
     'N-NO3', 'N-NH4', 'P', 'K', 'Ca', 'Mg', 'S', 'Cl', 'Fe', 'Zn', 'B', 'Mn', 'Cu', 'Mo',
   ];
 
-  private newChartsData$: BehaviorSubject<ChartConfiguration['data']> = new BehaviorSubject({
-    datasets: [],
-    labels: [...this.elements],
-  });
+  private newChartsData$: BehaviorSubject<any>
+    = new BehaviorSubject({
+      datasets: [],
+      labels: [...this.elements],
+    }
+  );
 
   public formattedCharts$ = this.newChartsData$.asObservable();
 
   constructor(private dataService: DataService) {
     this.dataService.selectedChartsData$.subscribe(charts => {
-      const newChartsData = [];
-
+      const newChartsData: ChartData<ChartType, DefaultDataPoint<ChartType>, unknown> = {
+        datasets: [],
+        labels: [...this.elements],
+      }
       charts.forEach((chart) => {
         const [newChart1, newChart2] = this.chartDataConverter(chart);
-        newChartsData.push(newChart1, newChart2)
+        newChartsData.datasets.push(newChart1, newChart2)
       })
 
-      this.newChartsData$.next({
-        datasets: [...newChartsData],
-        labels: [...this.elements],
-      });
+      this.newChartsData$.next(newChartsData);
     })
 
   }
 
-  private chartDataConverter(chart: IData) {
-    const hightValueElements = [];
-    const lowValueElements = [null, null, null, null, null, null, null, null];
+  private chartDataConverter(chart: IData): ChartDataset<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint | null)[]>[] {
+    const hightValueElements: Array<number | null | never> = [];
+    const lowValueElements: Array<number | null | never> = [null, null, null, null, null, null, null, null];
     // Set common colors for charts
     const backgroundColor = this.get_random_color(0.2);
     const borderColor = this.get_random_color(1);
@@ -60,7 +70,7 @@ export class ChartsDataService {
       dataLabels: {
         display: false,
       }
-    };
+    } as ChartDataset;
 
     const newChartLow = {
       type: 'bar',
@@ -76,8 +86,12 @@ export class ChartsDataService {
       pointHoverBorderColor: pointHoverBorderColor,
       fill: 'origin',
       datalabels: {
-        display: function(context) {
-          return context.dataset.data[context.dataIndex] > 0;
+        display: function(context: Context) {
+          if(context) {
+            // @ts-ignore: Object is possibly 'null'
+            return context.dataset.data[context.dataIndex] > 0;
+          }
+          return undefined;
         },
         clamp: true,
         anchor: 'end',
@@ -85,14 +99,14 @@ export class ChartsDataService {
         offset: 10,
         rotation: -90,
         color: 'rgba(255,0,0,0.9)',
-        formatter: function (value, context): number | void {
+        formatter: function (value: string, context): number | void {
           return parseFloat(value);
         },
         font: {
           weight: 'bold',
         }
       }
-    };
+    } as ChartDataset;
 
     chart.chartData.forEach((dataObj, index) =>
       (index < 8)

@@ -7,7 +7,7 @@ import { IData } from 'src/app/interfaces/local';
   styleUrls: ['./charts-list.component.scss']
 })
 export class MenuChartsListComponent implements OnInit {
-  @Input() chartsData: IData[];
+  @Input() chartsDataList!: IData[] | null;
 
   @Input() selected: number[] = [];
 

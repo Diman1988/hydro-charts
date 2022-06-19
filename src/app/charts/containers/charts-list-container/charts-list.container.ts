@@ -9,10 +9,10 @@ import { DataService } from 'src/app/services/data/data.service';
   styleUrls: ['./charts-list.container.scss']
 })
 export class ChartsListContainerComponent implements OnInit {
-  public chartsDataList$: Observable<IData[]>
+  public chartsDataList$: Observable<IData[]> = new Observable<IData[]>();
 
   get selected(): number[] {
-    let selectedArr = [];
+    let selectedArr: Array<number> = [];
 
     this.dataService.selected$.subscribe(value => {
       selectedArr = [...value];
