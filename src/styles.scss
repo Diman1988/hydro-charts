@@ -1,3 +1,17 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$my-primacy: mat.define-palette(mat.$green-palette, 500);
+$my-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
+
+$my-theme: mat.define-light-theme((
+  color: (
+    primacy: $my-primacy,
+    accent: $my-accent,
+  )
+));
+
 /* You can add global styles to this file, and also import other style files */
 body {
   background: linear-gradient(200deg, rgba(95,113,97, 0.7), rgba(152,152,152, 0.5) 50%);
