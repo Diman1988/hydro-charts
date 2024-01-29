@@ -1,21 +1,18 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { containers } from './containers';
 import { components } from './components';
-import { HeaderContainerComponent } from "./containers/header-container/header-container";
+import { HeaderContainerComponent } from './containers/header-container/header-container';
 
 @NgModule({
-  declarations: [
-    ...components,
-    ...containers,
-  ],
+  declarations: [...components, ...containers],
   imports: [
     BrowserModule,
     MatToolbarModule,
@@ -26,4 +23,4 @@ import { HeaderContainerComponent } from "./containers/header-container/header-c
   ],
   exports: [HeaderContainerComponent],
 })
-export class HeaderModule {};
+export class HeaderModule {}

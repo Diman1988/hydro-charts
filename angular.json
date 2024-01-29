@@ -29,11 +29,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/host.json"
-            ],
+            "assets": ["src/favicon.ico", "src/assets", "src/host.json"],
             "styles": [
               "src/styles.scss",
               "node_modules/@angular/material/prebuilt-themes/purple-green.css"
@@ -91,7 +87,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "hydro-charts:build"
+            "buildTarget": "hydro-charts:build"
           }
         },
         "test": {
@@ -102,10 +98,7 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "src/styles.scss",
               "node_modules/@angular/material/prebuilt-themes/purple-green.css"
